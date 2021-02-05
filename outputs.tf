@@ -26,3 +26,4 @@ output "ecs_module_output_map" {
 output "cloudposse_context" {
   value = module.this.context
 }
+
