@@ -3,7 +3,7 @@
 locals {
 
   # Backward compability to ecs_module_output_map
-  legacy_name                            = var.ecs_module_output_map != null ? var.ecs_module_output_map["name"] : null
+  /*  legacy_name                            = var.ecs_module_output_map != null ? var.ecs_module_output_map["name"] : null
   legacy_stage                           = var.ecs_module_output_map != null ? var.ecs_module_output_map["stage"] : null
   legacy_namespace                       = var.ecs_module_output_map != null ? var.ecs_module_output_map["namespace"] : null
   legacy_attributes                      = var.ecs_module_output_map != null ? var.ecs_module_output_map["attributes"] : []
@@ -27,7 +27,7 @@ locals {
   legacy_kms_key_id                      = var.ecs_module_output_map != null ? var.ecs_module_output_map["kms_key_id"] : null
   legacy_kms_key_access_policy_arn       = var.ecs_module_output_map != null ? var.ecs_module_output_map["kms_key_access_policy_arn"] : null
   legacy_service_discovery_namespace_id  = var.ecs_module_output_map != null ? var.ecs_module_output_map["service_discovery_namespace_id"] : null
-  legacy_service_discovery_name          = var.ecs_module_output_map != null ? var.ecs_module_output_map["service_discovery_name"] : null
+  legacy_service_discovery_name          = var.ecs_module_output_map != null ? var.ecs_module_output_map["service_discovery_name"] : null*/
   /*legacy_alb_listener_arn           = var.ecs_module_alb_output_map.listener_arn
   legacy_alb_dns_name               = var.ecs_module_alb_output_map.dns_name
   legacy_alb_dns_zone_id            = var.ecs_module_alb_output_map.dns_zone_id
@@ -37,7 +37,7 @@ locals {
 
 
   # compatibile with new context, if value not provided, tries to use leagacy one (new is over legacy in hierarchy)
-  new_name       = var.context-ecs.name != null ? var.context-ecs.name : local.legacy_name
+  /*  new_name       = var.context-ecs.name != null ? var.context-ecs.name : local.legacy_name
   new_stage      = var.context-ecs.stage != null ? var.context-ecs.stage : local.legacy_stage
   new_namespace  = var.context-ecs.namespace != null ? var.context-ecs.namespace : local.legacy_namespace
   new_tags       = merge(var.context-ecs.tags, var.tags, local.legacy_tags)
@@ -60,7 +60,7 @@ locals {
   new_kms_key_id                     = var.context-ecs.kms_key_id != null ? var.context-ecs.kms_key_id : local.legacy_kms_key_id
   new_kms_key_access_policy_arn      = var.context-ecs.kms_key_access_policy_arn != null ? var.context-ecs.kms_key_access_policy_arn : local.legacy_kms_key_access_policy_arn
   new_service_discovery_namespace_id = var.context-ecs.service_discovery_namespace_id != null ? var.context-ecs.service_discovery_namespace_id : local.legacy_service_discovery_namespace_id
-  new_service_discovery_name         = var.context-ecs.service_discovery_name != null ? var.context-ecs.service_discovery_name : local.legacy_service_discovery_name
+  new_service_discovery_name         = var.context-ecs.service_discovery_name != null ? var.context-ecs.service_discovery_name : local.legacy_service_discovery_name*/
 
 
   temp_alb_external_enabled = var.alb_external_enabled == null ? var.context-ecs.alb_external_enabled : var.alb_external_enabled
@@ -70,47 +70,48 @@ locals {
   temp_depends_on_modules   = var.depends_on_modules == null ? var.context-ecs.depends_on_modules : var.depends_on_modules
 
   input = {
-    name                = var.name != null ? var.name : local.new_name
-    stage               = var.stage != null ? var.stage : local.new_stage
-    namespace           = var.namespace != null ? var.namespace : local.new_namespace
-    attributes          = distinct(concat(var.context-ecs.attributes, local.legacy_attributes, var.attributes))
-    tags                = merge(local.new_tags, module.this.tags)
-    delimiter           = var.delimiter != null ? var.delimiter : local.new_delimiter
-    region              = var.region != null ? var.region : local.new_region
-    vpc_id              = var.vpc_id != null ? var.vpc_id : local.new_vpc_id
-    enabled             = module.this.enabled
-    environment         = module.this.environment
-    additional_tag_map  = module.this.additional_tag_map
-    regex_replace_chars = module.this.regex_replace_chars
-    label_order         = module.this.label_order
-    id_length_limit     = module.this.id_length_limit
-    service_internal_security_group     = var.service_internal_security_group != null ? var.service_internal_security_group : local.new_service_internal_security_group
+    name                                = var.name != null ? var.name : var.context-ecs.name
+    stage                               = var.stage != null ? var.stage : var.context-ecs.stage
+    namespace                           = var.namespace != null ? var.namespace : var.context-ecs.namespace
+    attributes                          = distinct(concat(var.context-ecs.attributes, var.attributes))
+    tags                                = merge(var.context-ecs.tags, var.tags, module.this.tags)
+    delimiter                           = var.delimiter != null ? var.delimiter : var.context-ecs.delimiter
+    region                              = var.region != null ? var.region : var.context-ecs.region
+    vpc_id                              = var.vpc_id != null ? var.vpc_id : var.context-ecs.vpc_id
+    enabled                             = module.this.enabled
+    environment                         = module.this.environment
+    additional_tag_map                  = module.this.additional_tag_map
+    regex_replace_chars                 = module.this.regex_replace_chars
+    label_order                         = module.this.label_order
+    id_length_limit                     = module.this.id_length_limit
+    service_internal_security_group     = var.service_internal_security_group != null ? var.service_internal_security_group : var.context-ecs.service_internal_security_group
+    private_subnets = var.private_subnets != null ? var.private_subnets : var.context-ecs.private_subnets
     alb_external_enabled                = var.alb_external_enabled == null ? var.context-ecs.alb_external_enabled : var.alb_external_enabled
-    alb_external_listener_arn           = local.alb_external_enabled ? (var.alb_external_listener_arn == null ? var.alb_external_listener_arn : var.context-ecs.alb_external_listener_arn) : null
-    alb_external_dns_name               = local.alb_external_enabled ? (var.alb_external_dns_name == null ? var.alb_external_dns_name : var.context-ecs.alb_external_dns_name) : null
-    alb_external_dns_zone_id            = local.alb_external_enabled ? (var.alb_external_dns_zone_id == null ? var.alb_external_dns_zone_id : var.context-ecs.alb_external_dns_zone_id) : null
-    alb_external_allowed_security_group = local.alb_external_enabled ? (var.alb_external_allowed_security_group == null ? var.alb_external_allowed_security_group : var.context-ecs.alb_external_allowed_security_group) : null
+    alb_external_listener_arn           = local.alb_external_enabled ? (var.alb_external_listener_arn != null ? var.alb_external_listener_arn : var.context-ecs.alb_external_listener_arn) : null
+    alb_external_dns_name               = local.alb_external_enabled ? (var.alb_external_dns_name != null ? var.alb_external_dns_name : var.context-ecs.alb_external_dns_name) : null
+    alb_external_dns_zone_id            = local.alb_external_enabled ? (var.alb_external_dns_zone_id != null ? var.alb_external_dns_zone_id : var.context-ecs.alb_external_dns_zone_id) : null
+    alb_external_allowed_security_group = local.alb_external_enabled ? (var.alb_external_allowed_security_group != null ? var.alb_external_allowed_security_group : var.context-ecs.alb_external_allowed_security_group) : null
     alb_internal_enabled                = var.alb_internal_enabled == null ? var.context-ecs.alb_internal_enabled : var.alb_internal_enabled
-    alb_internal_listener_arn           = local.alb_internal_enabled ? (var.alb_internal_listener_arn == null ? var.alb_internal_listener_arn : var.context-ecs.alb_internal_listener_arn) : null
-    alb_internal_dns_name               = local.alb_internal_enabled ? (var.alb_internal_dns_name == null ? var.alb_internal_dns_name : var.context-ecs.alb_internal_dns_name) : null
-    alb_internal_dns_zone_id            = local.alb_internal_enabled ? (var.alb_internal_dns_zone_id == null ? var.alb_internal_dns_zone_id : var.context-ecs.alb_internal_dns_zone_id) : null
-    alb_internal_allowed_security_group = local.alb_internal_enabled ? (var.alb_internal_allowed_security_group == null ? var.alb_internal_allowed_security_group : var.context-ecs.alb_internal_allowed_security_group) : null
-    launch_type                         = var.launch_type == null ? local.new_launch_type : var.launch_type
-    ecs_cluster_arn                     = var.ecs_cluster_arn == null ? local.new_ecs_cluster_arn : var.ecs_cluster_arn
-    aws_logs_region                     = var.aws_logs_region == null ? local.new_aws_logs_region : var.aws_logs_region
-    aws_cloudwatch_log_group_name       = var.aws_cloudwatch_log_group_name == null ? local.new_aws_cloudwatch_log_group_name : var.aws_cloudwatch_log_group_name
-    deploy_iam_access_key               = var.deploy_iam_access_key == null ? local.new_deploy_iam_access_key : var.deploy_iam_access_key
-    deploy_iam_secret_key               = var.deploy_iam_secret_key == null ? local.new_deploy_iam_secret_key : var.deploy_iam_secret_key
-    domain_name                         = var.domain_name == null ? local.new_domain_name : var.domain_name
-    domain_zone_id                      = var.domain_zone_id == null ? local.new_domain_zone_id : var.domain_zone_id
-    alb_acm_certificate_arn             = var.alb_acm_certificate_arn == null ? local.new_alb_acm_certificate_arn : var.alb_acm_certificate_arn
-    kms_key_alias_arn                   = var.kms_key_alias_arn == null ? local.new_kms_key_alias_arn : var.kms_key_alias_arn
-    kms_key_alias_name                  = var.kms_key_alias_name == null ? local.new_kms_key_alias_name : var.kms_key_alias_name
-    kms_key_arn                         = var.kms_key_arn == null ? local.new_kms_key_arn : var.kms_key_arn
-    kms_key_id                          = var.kms_key_id == null ? local.new_kms_key_id : var.kms_key_id
-    kms_key_access_policy_arn           = var.kms_key_access_policy_arn == null ? local.new_kms_key_access_policy_arn : var.kms_key_access_policy_arn
-    service_discovery_namespace_id      = var.service_discovery_namespace_id == null ? local.new_service_discovery_namespace_id : var.service_discovery_namespace_id
-    service_discovery_name              = var.service_discovery_name == null ? local.new_service_discovery_name : var.service_discovery_name
+    alb_internal_listener_arn           = local.alb_internal_enabled ? (var.alb_internal_listener_arn != null ? var.alb_internal_listener_arn : var.context-ecs.alb_internal_listener_arn) : null
+    alb_internal_dns_name               = local.alb_internal_enabled ? (var.alb_internal_dns_name != null ? var.alb_internal_dns_name : var.context-ecs.alb_internal_dns_name) : null
+    alb_internal_dns_zone_id            = local.alb_internal_enabled ? (var.alb_internal_dns_zone_id != null ? var.alb_internal_dns_zone_id : var.context-ecs.alb_internal_dns_zone_id) : null
+    alb_internal_allowed_security_group = local.alb_internal_enabled ? (var.alb_internal_allowed_security_group != null ? var.alb_internal_allowed_security_group : var.context-ecs.alb_internal_allowed_security_group) : null
+    launch_type                         = var.launch_type == null ? var.context-ecs.launch_type : var.launch_type
+    ecs_cluster_arn                     = var.ecs_cluster_arn == null ? var.context-ecs.ecs_cluster_arn : var.ecs_cluster_arn
+    aws_logs_region                     = var.aws_logs_region == null ? var.context-ecs.aws_logs_region : var.aws_logs_region
+    aws_cloudwatch_log_group_name       = var.aws_cloudwatch_log_group_name == null ? var.context-ecs.aws_cloudwatch_log_group_name : var.aws_cloudwatch_log_group_name
+    deploy_iam_access_key               = var.deploy_iam_access_key == null ? var.context-ecs.deploy_iam_access_key : var.deploy_iam_access_key
+    deploy_iam_secret_key               = var.deploy_iam_secret_key == null ? var.context-ecs.deploy_iam_secret_key : var.deploy_iam_secret_key
+    domain_name                         = var.domain_name == null ? var.context-ecs.domain_name : var.domain_name
+    domain_zone_id                      = var.domain_zone_id == null ? var.context-ecs.domain_zone_id : var.domain_zone_id
+    alb_acm_certificate_arn             = var.alb_acm_certificate_arn == null ? var.context-ecs.alb_acm_certificate_arn : var.alb_acm_certificate_arn
+    kms_key_alias_arn                   = var.kms_key_alias_arn == null ? var.context-ecs.kms_key_alias_arn : var.kms_key_alias_arn
+    kms_key_alias_name                  = var.kms_key_alias_name == null ? var.context-ecs.kms_key_alias_name : var.kms_key_alias_name
+    kms_key_arn                         = var.kms_key_arn == null ? var.context-ecs.kms_key_arn : var.kms_key_arn
+    kms_key_id                          = var.kms_key_id == null ? var.context-ecs.kms_key_id : var.kms_key_id
+    kms_key_access_policy_arn           = var.kms_key_access_policy_arn == null ? var.context-ecs.kms_key_access_policy_arn : var.kms_key_access_policy_arn
+    service_discovery_namespace_id      = var.service_discovery_namespace_id == null ? var.context-ecs.service_discovery_namespace_id : var.service_discovery_namespace_id
+    service_discovery_name              = var.service_discovery_name == null ? var.context-ecs.service_discovery_name : var.service_discovery_name
     depends_on_modules                  = var.additional_depends_on_modules == null ? local.temp_depends_on_modules : concat(local.temp_depends_on_modules, var.additional_depends_on_modules)
   }
 
@@ -126,6 +127,7 @@ locals {
   regex_replace_chars = local.input.regex_replace_chars == null ? "" : local.input.regex_replace_chars
   label_order         = local.input.label_order
   id_length_limit     = local.input.id_length_limit
+  private_subnets = local.input.private_subnets == null ? [] : local.input.private_subnets
 
 
   alb_external_listener_arn           = local.input.alb_external_listener_arn == null ? "" : local.input.alb_external_listener_arn
@@ -172,6 +174,7 @@ locals {
     regex_replace_chars = local.regex_replace_chars
     label_order         = local.label_order
     id_length_limit     = local.id_length_limit
+    private_subnets = local.private_subnets
 
     alb_external_enabled                = local.alb_external_enabled
     alb_external_listener_arn           = local.alb_external_listener_arn

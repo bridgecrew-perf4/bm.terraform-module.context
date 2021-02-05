@@ -65,6 +65,7 @@ variable "context-ecs" {
     regex_replace_chars                 = string
     label_order                         = list(string)
     id_length_limit                     = number
+    private_subnets = list(string)
     alb_external_enabled                = bool
     alb_external_listener_arn           = string
     alb_external_dns_name               = string
@@ -75,7 +76,7 @@ variable "context-ecs" {
     alb_internal_dns_name               = string
     alb_internal_dns_zone_id            = string
     alb_internal_allowed_security_group = string
-    service_internal_security_group    = string
+    service_internal_security_group     = string
     region                              = string
     vpc_id                              = string
     launch_type                         = string
@@ -109,6 +110,7 @@ variable "context-ecs" {
     regex_replace_chars                 = null
     label_order                         = []
     id_length_limit                     = null
+    private_subnets = null
     alb_external_enabled                = false
     alb_external_listener_arn           = null
     alb_external_dns_name               = null
@@ -119,7 +121,7 @@ variable "context-ecs" {
     alb_internal_dns_name               = null
     alb_internal_dns_zone_id            = null
     alb_internal_allowed_security_group = null
-    service_internal_security_group    = null
+    service_internal_security_group     = null
     region                              = null
     vpc_id                              = null
     launch_type                         = null
@@ -159,7 +161,7 @@ variable "alb_external_dns_zone_id" {
   default = null
 }
 variable "alb_external_allowed_security_group" {
-  type    = list(string)
+  type    = string
   default = null
 }
 
@@ -180,7 +182,7 @@ variable "alb_internal_dns_zone_id" {
   default = null
 }
 variable "alb_internal_allowed_security_group" {
-  type    = list(string)
+  type    = string
   default = null
 }
 
@@ -190,7 +192,7 @@ variable "region" {
 }
 
 variable "service_internal_security_group" {
-  type = string
+  type    = string
   default = null
 }
 
@@ -289,8 +291,13 @@ variable "additional_depends_on_modules" {
   default = null
 }
 
+variable "private_subnets" {
+  type = list(string)
+  default = null
+}
+
 # backward compability
-variable "ecs_module_output_map" {
+/*variable "ecs_module_output_map" {
   type = object({
     name                            = string
     stage                           = string
@@ -320,7 +327,7 @@ variable "ecs_module_output_map" {
   })
   description = "ECS module output map"
   default     = null
-}
+}*/
 
 /*
 variable "ecs_module_alb_output_map" {

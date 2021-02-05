@@ -88,14 +88,14 @@ variable "id_length_limit" {
 
 locals {
   input_context = {
-    enabled     = var.enabled != null ? var.enabled : (var.context-ecs.enabled != null ? var.context-ecs.enabled : null)
-    namespace   = var.namespace != null ? var.namespace : (var.context-ecs.namespace != null ? var.context-ecs.namespace : null)
-    environment = var.environment != null ? var.environment : (var.context-ecs.environment != null ? var.context-ecs.environment : null)
-    stage       = var.stage != null ? var.stage : (var.context-ecs.stage != null ? var.context-ecs.stage : null)
-    name        = var.name != null ? var.name : (var.context-ecs.name != null ? var.context-ecs.name : null)
-    delimiter   = var.delimiter != null ? var.delimiter : (var.context-ecs.delimiter != null ? var.context-ecs.delimiter : null)
-    attributes = compact(distinct(concat(coalesce(var.context-ecs.attributes, []), coalesce(var.attributes, []))))
-    tags = merge(var.context-ecs.tags, var.tags)
+    enabled             = var.enabled != null ? var.enabled : (var.context-ecs.enabled != null ? var.context-ecs.enabled : null)
+    namespace           = var.namespace != null ? var.namespace : (var.context-ecs.namespace != null ? var.context-ecs.namespace : null)
+    environment         = var.environment != null ? var.environment : (var.context-ecs.environment != null ? var.context-ecs.environment : null)
+    stage               = var.stage != null ? var.stage : (var.context-ecs.stage != null ? var.context-ecs.stage : null)
+    name                = var.name != null ? var.name : (var.context-ecs.name != null ? var.context-ecs.name : null)
+    delimiter           = var.delimiter != null ? var.delimiter : (var.context-ecs.delimiter != null ? var.context-ecs.delimiter : null)
+    attributes          = compact(distinct(concat(coalesce(var.context-ecs.attributes, []), coalesce(var.attributes, []))))
+    tags                = merge(var.context-ecs.tags, var.tags)
     additional_tag_map  = merge(var.context-ecs.additional_tag_map, var.additional_tag_map)
     label_order         = var.label_order == null ? var.context-ecs.label_order : var.label_order
     regex_replace_chars = var.regex_replace_chars != null ? var.regex_replace_chars : (var.context-ecs.regex_replace_chars != null ? var.context-ecs.regex_replace_chars : null)
