@@ -150,7 +150,7 @@ variable "vpc_id" {
 
 variable "launch_type" {
   type    = string
-  default = "FARGATE"
+  default = null
 }
 
 variable "ecs_cluster_arn" {
