@@ -27,3 +27,7 @@ output "cloudposse_context" {
   value = module.this.context
 }
 
+output "id" {
+  value = module.this.id
+}
+

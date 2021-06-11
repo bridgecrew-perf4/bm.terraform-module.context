@@ -106,7 +106,7 @@ locals {
 
 module "this" {
   source  = "cloudposse/label/null"
-  version = "0.22.1" // requires Terraform >= 0.12.26
+  version = "0.24.1"
 
   enabled             = local.input_context.enabled
   namespace           = local.input_context.namespace
