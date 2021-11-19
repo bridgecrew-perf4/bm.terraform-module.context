@@ -1,4 +1,8 @@
 ---
+# 1.2.0
+## Main Changes
+    - Add variables used with module `ecs-dashboard`
+
 # 1.1.0
 ## Main Changes
     - Add output: `id`, it's basicaly CP's `label_id`

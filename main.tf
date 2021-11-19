@@ -35,6 +35,8 @@ locals {
     alb_internal_dns_zone_id            = local.alb_internal_enabled ? (var.alb_internal_dns_zone_id != null ? var.alb_internal_dns_zone_id : var.context-ecs.alb_internal_dns_zone_id) : null
     alb_internal_allowed_security_group = local.alb_internal_enabled ? (var.alb_internal_allowed_security_group != null ? var.alb_internal_allowed_security_group : var.context-ecs.alb_internal_allowed_security_group) : null
     launch_type                         = var.launch_type == null ? var.context-ecs.launch_type : var.launch_type
+    asg_cpu_monitoring                  = var.asg_cpu_monitoring == null ? var.context-ecs.asg_cpu_monitoring : var.asg_cpu_monitoring
+    asg_memory_monitoring               = var.asg_memory_monitoring == null ? var.context-ecs.asg_memory_monitoring : var.asg_memory_monitoring
     ecs_cluster_arn                     = var.ecs_cluster_arn == null ? var.context-ecs.ecs_cluster_arn : var.ecs_cluster_arn
     aws_logs_region                     = var.aws_logs_region == null ? var.context-ecs.aws_logs_region : var.aws_logs_region
     aws_cloudwatch_log_group_name       = var.aws_cloudwatch_log_group_name == null ? var.context-ecs.aws_cloudwatch_log_group_name : var.aws_cloudwatch_log_group_name

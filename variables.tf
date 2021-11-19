@@ -27,6 +27,8 @@ variable "context-ecs" {
     region                              = string
     vpc_id                              = string
     launch_type                         = string
+    asg_cpu_monitoring                  = string
+    asg_memory_monitoring               = string
     ecs_cluster_arn                     = string
     aws_logs_region                     = string
     aws_cloudwatch_log_group_name       = string
@@ -72,6 +74,8 @@ variable "context-ecs" {
     region                              = null
     vpc_id                              = null
     launch_type                         = null
+    asg_cpu_monitoring                  = null
+    asg_memory_monitoring               = null
     ecs_cluster_arn                     = null
     aws_logs_region                     = null
     aws_cloudwatch_log_group_name       = null
@@ -149,6 +153,16 @@ variable "vpc_id" {
 }
 
 variable "launch_type" {
+  type    = string
+  default = null
+}
+
+variable "asg_cpu_monitoring" {
+  type    = string
+  default = null
+}
+
+variable "asg_memory_monitoring" {
   type    = string
   default = null
 }
