@@ -53,6 +53,7 @@ locals {
     service_discovery_namespace_id      = var.service_discovery_namespace_id == null ? var.context-ecs.service_discovery_namespace_id : var.service_discovery_namespace_id
     service_discovery_name              = var.service_discovery_name == null ? var.context-ecs.service_discovery_name : var.service_discovery_name
     depends_on_modules                  = var.additional_depends_on_modules == null ? local.temp_depends_on_modules : concat(local.temp_depends_on_modules, var.additional_depends_on_modules)
+    repositories                        = var.repositories != null ? var.repositories : var.context-ecs.repositories
   }
 
   enabled             = local.input.enabled == null ? true : local.input.enabled
@@ -99,6 +100,7 @@ locals {
   service_discovery_namespace_id  = local.input.service_discovery_namespace_id == null ? "" : local.input.service_discovery_namespace_id
   service_discovery_name          = local.input.service_discovery_name == null ? "" : local.input.service_discovery_name
   depends_on_modules              = local.input.depends_on_modules
+  repositories                    = local.input.repositories == null ? "" : local.input.repositories
 
   # Normalization (for future use)
   output_context = {
@@ -147,6 +149,7 @@ locals {
     service_discovery_namespace_id  = local.service_discovery_namespace_id
     service_discovery_name          = local.service_discovery_name
     depends_on_modules              = local.depends_on_modules
+    repositories                    = local.repositories
   }
 
   # used in ecs-service - to provide backward compability

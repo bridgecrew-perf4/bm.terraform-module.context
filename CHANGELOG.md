@@ -1,3 +1,5 @@
+# 1.3.0
+    - Add variable repositories. For drone usage 
 ---
 # 1.2.0
 ## Main Changes
