@@ -106,7 +106,7 @@ locals {
 
 module "this" {
   source  = "cloudposse/label/null"
-  version = "0.24.1"
+  version = "0.25.0"
 
   enabled             = local.input_context.enabled
   namespace           = local.input_context.namespace

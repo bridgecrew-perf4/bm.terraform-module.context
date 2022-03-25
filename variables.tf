@@ -45,6 +45,7 @@ variable "context-ecs" {
     service_discovery_namespace_id      = string
     service_discovery_name              = string
     depends_on_modules                  = list(string)
+    repositories                        = string
   })
   default = {
     enabled                             = true
@@ -92,6 +93,7 @@ variable "context-ecs" {
     service_discovery_namespace_id      = null
     service_discovery_name              = null
     depends_on_modules                  = []
+    repositories                        = null
   }
 }
 
@@ -254,5 +256,10 @@ variable "additional_depends_on_modules" {
 
 variable "private_subnets" {
   type    = list(string)
+  default = null
+}
+
+variable "repositories" {
+  type    = string
   default = null
 }
